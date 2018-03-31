@@ -1,0 +1,60 @@
+body {
+	margin: 0;
+	box-sizing: border-box;
+	background-color: #f0f0f0;
+}
+
+section {
+	height: calc(100vh - 80px);
+	padding: 40px;
+}
+
+.drag-area {
+	height: 100%;
+	border: 5px dashed #cfcfcf;
+	box-sizing: border-box;
+	display: flex;
+	justify-content: center;
+	font-size: 1.2em;
+	font-family: monospace;
+}
+
+.drag-items {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	color: #a5a5a5;
+}
+
+.fa-upload {
+	font-size: 2.8em;
+}
+
+.drag-items > div {
+	padding: 12px 0px;
+}
+
+.drag-items > button {
+	background: #a5a5a5;
+	border: 0;
+	color: #eeeeee;
+	padding: 10px 40px;
+	margin-top: 12px;
+	cursor: pointer;
+	transition: all 0.5s ease;
+	font-family: monospace;
+}
+
+.drag-items > button:hover {
+	background: #418fde;
+}
+
+.drag-items > button:active {
+	background: #2f679e;
+}
+
+.drag-items > button:focus {
+	outline: none;
+	border: none;
+}
