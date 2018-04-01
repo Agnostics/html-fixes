@@ -42,7 +42,8 @@
 	"dependencies": {
 		"electron-compile": "^6.4.2",
 		"electron-squirrel-startup": "^1.0.0",
-		"file-system": "^2.2.2"
+		"file-system": "^2.2.2",
+		"replacestream": "^4.0.3"
 	},
 	"devDependencies": {
 		"@types/electron": "^1.6.10",

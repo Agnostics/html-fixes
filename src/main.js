@@ -1,5 +1,7 @@
 import { app, BrowserWindow, dialog } from "electron";
-import { fs } from "file-system";
+
+const fs = require("fs");
+const replaceStream = require("replacestream");
 
 require("electron-reload")(__dirname);
 
@@ -8,6 +10,37 @@ if (require("electron-squirrel-startup")) {
 }
 
 let mainWindow;
+
+let searchResults = [];
+let replaceResults = [];
+let filePath = "";
+
+const showDialog = () => {
+	dialog.showOpenDialog(
+		{ properties: ["openFile"], filters: [{ name: "Important Fixes", extensions: ["txt"] }] },
+		openPath => {
+			filePath = openPath;
+			fs.readFile(openPath[0], "utf8", function read(err, data) {
+				var regSearch = /Search:([\s\S]*?)Replace:/g;
+				var resultSearch;
+				while ((resultSearch = regSearch.exec(data)) !== null) {
+					var newtext = RegExp.$1;
+					searchResults.push(newtext.replace(/\r/g, "").trim());
+				}
+
+				var regReplace = /Replace:([\s\S]*?)Occurrences:/gi;
+				var resultReplace;
+				while ((resultReplace = regReplace.exec(data)) !== null) {
+					var newtext = RegExp.$1;
+					replaceResults.push(newtext.replace(/\r/g, "").trim());
+				}
+
+				console.log(searchResults);
+				console.log(replaceResults);
+			});
+		}
+	);
+};
 
 const createWindow = () => {
 	// Create the browser window.
