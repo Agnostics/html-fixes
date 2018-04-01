@@ -7,6 +7,21 @@ body {
 section {
 	height: calc(100vh - 80px);
 	padding: 40px;
+	transition: opacity 1s ease-out;
+}
+
+#window-2 {
+	display: none;
+	transition: opacity 1s ease-out;
+}
+
+.info-area {
+	height: 100%;
+	box-sizing: border-box;
+	display: flex;
+	justify-content: center;
+	font-size: 1.2em;
+	font-family: monospace;
 }
 
 .drag-area {

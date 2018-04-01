@@ -1,7 +1,4 @@
-import { app, BrowserWindow, dialog } from "electron";
-
-const fs = require("fs");
-const replaceStream = require("replacestream");
+import { app, BrowserWindow, dialog, ipcMain as ipc } from "electron";
 
 require("electron-reload")(__dirname);
 
@@ -11,36 +8,14 @@ if (require("electron-squirrel-startup")) {
 
 let mainWindow;
 
-let searchResults = [];
-let replaceResults = [];
-let filePath = "";
-
-const showDialog = () => {
+ipc.on("open-file-dialog", function(event) {
 	dialog.showOpenDialog(
 		{ properties: ["openFile"], filters: [{ name: "Important Fixes", extensions: ["txt"] }] },
 		openPath => {
-			filePath = openPath;
-			fs.readFile(openPath[0], "utf8", function read(err, data) {
-				var regSearch = /Search:([\s\S]*?)Replace:/g;
-				var resultSearch;
-				while ((resultSearch = regSearch.exec(data)) !== null) {
-					var newtext = RegExp.$1;
-					searchResults.push(newtext.replace(/\r/g, "").trim());
-				}
-
-				var regReplace = /Replace:([\s\S]*?)Occurrences:/gi;
-				var resultReplace;
-				while ((resultReplace = regReplace.exec(data)) !== null) {
-					var newtext = RegExp.$1;
-					replaceResults.push(newtext.replace(/\r/g, "").trim());
-				}
-
-				console.log(searchResults);
-				console.log(replaceResults);
-			});
+			if (openPath) event.sender.send("selected-file", openPath);
 		}
 	);
-};
+});
 
 const createWindow = () => {
 	// Create the browser window.
@@ -53,8 +28,6 @@ const createWindow = () => {
 
 	// and load the index.html of the app.
 	mainWindow.loadURL(`file://${__dirname}/index.html`);
-
-	setTimeout(showDialog, 2000);
 
 	// Open the DevTools.
 	mainWindow.webContents.openDevTools();
