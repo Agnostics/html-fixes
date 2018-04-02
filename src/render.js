@@ -1,14 +1,38 @@
-import { ipcRenderer as ipc, dialog } from "electron";
+import { ipcRenderer as ipc, dialog, remote } from "electron";
 const fs = require("fs");
+const Mousetrap = require("mousetrap");
+const CountUp = require("countup.js");
 
 const getFileBTN = document.getElementById("getfile");
-const getSaveBTN = document.getElementById("saved");
 const getBackBTN = document.getElementById("back");
+const closeWindow = document.getElementById("close");
+const minWindow = document.getElementById("min");
 
 let searchResults = [];
 let replaceResults = [];
 let filePath = "";
 let isFixed = false;
+
+let options = {
+	useEasing: true,
+	useGrouping: true,
+	separator: ",",
+	decimal: "."
+};
+
+let countAnim = new CountUp();
+
+Mousetrap.bind("ctrl+`", () => {
+	ipc.send("open-devtools");
+});
+
+closeWindow.addEventListener("click", event => {
+	remote.BrowserWindow.getFocusedWindow().close();
+});
+
+minWindow.addEventListener("click", event => {
+	remote.BrowserWindow.getFocusedWindow().minimize();
+});
 
 getFileBTN.addEventListener("click", event => {
 	ipc.send("open-file-dialog");
@@ -16,12 +40,6 @@ getFileBTN.addEventListener("click", event => {
 
 getBackBTN.addEventListener("click", event => {
 	updateView();
-});
-
-getSaveBTN.addEventListener("click", event => {
-	console.log(searchResults);
-	console.log(replaceResults);
-	console.log("filepath: " + filePath);
 });
 
 ipc.on("selected-file", (event, path) => {
@@ -43,6 +61,7 @@ document.body.ondrop = ev => {
 		searchResults = [];
 		replaceResults = [];
 		filePath = "";
+		countAnim.reset();
 	}
 
 	filePath = ev.dataTransfer.files[0].path;
@@ -67,9 +86,14 @@ const parseFixes = path => {
 		}
 
 		console.log("Parsing Search & Replace");
+		countAnim = new CountUp("total-number", 0, searchResults.length, 0, 5, options);
 	});
 
 	updateView();
+
+	setTimeout(() => {
+		countAnim.start();
+	}, 100);
 };
 
 const updateView = () => {
@@ -83,4 +107,10 @@ const updateView = () => {
 		win1.style.display = "block";
 		win2.style.display = "none";
 	}
+};
+
+const debugParse = () => {
+	console.log(searchResults);
+	console.log(replaceResults);
+	console.log("filepath: " + filePath);
 };

@@ -40,9 +40,11 @@
 		}
 	},
 	"dependencies": {
+		"countup.js": "^1.9.3",
 		"electron-compile": "^6.4.2",
 		"electron-squirrel-startup": "^1.0.0",
 		"file-system": "^2.2.2",
+		"mousetrap": "^1.6.1",
 		"replacestream": "^4.0.3"
 	},
 	"devDependencies": {

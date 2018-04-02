@@ -6,12 +6,20 @@
   <link rel="stylesheet" type="text/css" href="./style/main.css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.9/css/all.css" integrity="sha384-5SOiIsAziJl6AWe0HWRKTXlfcSHKmYV4RBF18PPJ173Kzn7jzMyFuTtk8JA7QQG1"
     crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:200,300,400,500" rel="stylesheet">
 
 
   <title>HTML Fixes</title>
 </head>
 
 <body>
+
+  <nav>
+    <div class="title-bar"></div>
+    <div id="min">_</div>
+    <div id="close">X</div>
+  </nav>
+
   <section id="window-1">
     <div class="drag-area">
       <div class="drag-items">
@@ -26,11 +34,28 @@
   </section>
   <section id="window-2">
     <div class="info-area">
-      <div>
-        <button id="saved">Check Variables</button>
-        <button id="back">Parse new fixes</button>
+
+      <div class="job-display">
+        <div id="job-number">job #?</div>
       </div>
+
+      <div class="fix-display">
+        <div id="total-number">32</div>
+        <div class="tf">total fixes</div>
+      </div>
+
+      <div id="back" class="new-parse">
+        <i class="fa fa-chevron-circle-left"></i>
+        <div>GO BACK</div>
+      </div>
+
+      <div id="run-fixes">
+        <div>RUN FIXES</div>
+        <i class="fa fa-chevron-circle-right"></i>
+      </div>
+
     </div>
+
 
   </section>
 </body>

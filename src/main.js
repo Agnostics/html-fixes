@@ -1,4 +1,4 @@
-import { app, BrowserWindow, dialog, ipcMain as ipc } from "electron";
+import { app, BrowserWindow, dialog, ipcMain as ipc, globalShortcut } from "electron";
 
 require("electron-reload")(__dirname);
 
@@ -8,29 +8,20 @@ if (require("electron-squirrel-startup")) {
 
 let mainWindow;
 
-ipc.on("open-file-dialog", function(event) {
-	dialog.showOpenDialog(
-		{ properties: ["openFile"], filters: [{ name: "Important Fixes", extensions: ["txt"] }] },
-		openPath => {
-			if (openPath) event.sender.send("selected-file", openPath);
-		}
-	);
-});
-
 const createWindow = () => {
 	// Create the browser window.
 	mainWindow = new BrowserWindow({
-		maxWidth: 800,
-		maxHeight: 600,
-		minHeight: 400,
-		minWidth: 400
+		width: 400,
+		height: 300,
+		frame: false,
+		resizable: false
 	});
 
 	// and load the index.html of the app.
 	mainWindow.loadURL(`file://${__dirname}/index.html`);
 
 	// Open the DevTools.
-	mainWindow.webContents.openDevTools();
+	// mainWindow.webContents.openDevTools();
 
 	// Hide top menu
 	mainWindow.setMenu(null);
@@ -53,5 +44,20 @@ app.on("window-all-closed", () => {
 app.on("activate", () => {
 	if (mainWindow === null) {
 		createWindow();
+	}
+});
+
+ipc.on("open-file-dialog", function(event) {
+	dialog.showOpenDialog(
+		{ properties: ["openFile"], filters: [{ name: "Important Fixes", extensions: ["txt"] }] },
+		openPath => {
+			if (openPath) event.sender.send("selected-file", openPath);
+		}
+	);
+});
+
+ipc.on("open-devtools", () => {
+	if (mainWindow != null) {
+		mainWindow.webContents.openDevTools();
 	}
 });
